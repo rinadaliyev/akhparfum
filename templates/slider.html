@@ -1,0 +1,75 @@
+{% extends "layout-admin.html" %} {% block title %}Edit{% endblock title %}
+{%block content %}
+<main class="content">
+  <div class="container-fluid p-0">
+
+    <div class="mb-3">
+      <h1 class="h3 d-inline align-middle">Slider Control Panel</h1>
+      <a class="badge bg-dark text-white ms-2" >
+        Set Axi
+      </a>
+    </div>
+        <div class="col-12 col-md-9">
+          <form class="row" method="POST" action="{{url_for('slideradd', user=user)}}" enctype="multipart/form-data">
+            <div class="card" >
+              <div class="card-header">
+                <label for="file" class="form-label">Select Image</label>
+                  <input name="file" type="file" class="form-control" accept=".jpg, .jpeg, .png" required ><br>
+                  <label for='title' style="min-width:100%;">
+                    <label for="" class="mb-1">Slider Title</label>
+                  <input type="text" name="title" class="form-control" placeholder="Slider's Title" />
+                  </label><br><br>
+                  <label for='second' style="min-width:100%;">
+                    <label for="" class="mb-1">Slider Second Title</label>
+                  <input type="text" name="second" class="form-control" placeholder="Slider's Second Title" />
+                  </label><br><br>
+                  <select name="status" class="form-select mb-3">
+                    <option selected value=1>Active</option>
+                    <option value=0>Passive</option>
+                  </select>
+                  <div style=" text-align:right;">
+                  <button type="submit" class="btn btn-info" style='margin-bottom: 2rem;'>Add</button>
+                  </div>
+              </div>        
+            </div>
+          </form>
+
+          {% for slider in sliders %}
+        <form class="row" method="POST" action="{{url_for('slidercontrol', user=user, id=slider['carousel_id'])}}" enctype="multipart/form-data">
+          <div class="card"  >
+            <img class="card-img-top" src="{{ url_for('static', filename=slider['carousel_image']) }}" style='width: 15rem;'>
+            <div class="card-header">
+              <label for="file" class="form-label">Select Image</label>
+                <input name="file" type="file" class="form-control" accept=".jpg, .jpeg, .png" required ><br>
+                <label for='title' style="min-width:100%;">
+                  <label for="" class="mb-1">Slider Title</label>
+                <input type="text" name="title" class="form-control" value="{{slider['carousel_title']}}" />
+                </label><br><br>
+                <label for='second' style="min-width:100%;">
+                  <label for="" class="mb-1">Slider Second Title</label>
+                <input type="text" name="second" class="form-control" value="{{slider['carousel_second']}}" />
+                </label><br><br>
+                <select name="status" class="form-select mb-3">
+                  {% if slider['carousel_status'] == 1 %}
+                  <option selected value=1>Active</option>
+                  <option value=0>Passive</option>
+                  {% else %}
+                  <option selected value=0>Passive</option>
+                  <option value=1>Active</option>
+                  {% endif %}
+                </select>
+                <div style=" text-align:right;">
+                <button type="submit" class="btn btn-info" style='margin-bottom: 2rem;'>Edit</button>
+                </div>
+            </div>        
+          </div>
+        </form>
+
+        {% endfor %}
+        </div>
+
+  
+  </div>
+</main>
+
+{% endblock content %}

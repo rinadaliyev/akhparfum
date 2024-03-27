@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+{% block title %}Detail{% endblock title %}
+{% block content %}
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">Fragrance Detail</h1>
+            <div class="d-inline-flex">
+                <p class="m-0"><a href="">Home</a></p>
+                <p class="m-0 px-2">-</p>
+                <p class="m-0">Shop Detail</p>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- Shop Detail Start -->
+    <div class="container-fluid py-5 border-bottom">
+        <div class="row px-xl-5">
+            <div class="col-lg-5 pb-5">
+                <div id="product-carousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner border">
+                        <div class="carousel-item active">
+                            <img class="w-100 h-100" src="{{url_for('static', filename=(url_for('static', filename=fragrance['fragrance_thumb'])))}}" alt="Image">
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                        <i class="fa fa-2x fa-angle-left text-dark"></i>
+                    </a>
+                    <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+                        <i class="fa fa-2x fa-angle-right text-dark"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-7 pb-5">
+                <h3 class="font-weight-semi-bold">{{ fragrance['brand_title'] }} {{ fragrance['fragrance_title'] }}</h3>
+                <div class="d-flex mb-3 border">
+                    
+                </div>
+                <div class="d-flex">
+                    {% if fragrance['fragrance_discount'] == 0 %}
+                    <h3 class="font-weight-semi-bold mb-4">{{ fragrance['fragrance_price'] }}₼</h3>
+                    {% else %}
+                    <h3 class="font-weight-semi-bold mb-4">{{ discountCalc(fragrance['fragrance_price'], fragrance['fragrance_discount'])}}₼</h3>
+                    <h3 class="text-muted ml-2"><del>{{fragrance['fragrance_price']}}<span class='font-weight-bold'>₼</span></del></h3>
+                    {% endif %}
+                </div>
+                <p class="mb-4">{{fragrance['fragrance_desc']}}</p>
+                <div class="d-flex mb-3">
+                    <p class="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>
+                    <div>
+                        <div class="custom-control custom-radio custom-control-inline mb-3">
+                            <input type="radio" class="custom-control-input" id="size-1" name="size">
+                            <label class="custom-control-label" for="size-1">S-30 ml</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="size-2" name="size">
+                            <label class="custom-control-label" for="size-2">M-50 ml</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="size-3" name="size">
+                            <label class="custom-control-label" for="size-3">L- 100ml</label>
+                        </div>
+                        <div class="d-flex align-items-center mb-4 pt-2">
+                            <button class="btn btn-primary px-3"><i class="fa-brands fa-whatsapp mr-2"></i><a href="https://wa.me/994773477107?text={{fragrance['fragrance_id']}} - Salam, {{fragrance['fragrance_title']}} Ətrinizdən əldə etmək istəyirdim...  ">Get with Whatsapp</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Shop Detail End -->
+
+
+    <div class="container-fluid pt-5">
+        <div class="text-center mb-4">
+            <h2 class="section-title px-5"><span class="px-2">You May Also Like</span></h2>
+        </div>
+        <div class="row px-xl-5 pb-3">
+            {% for perfume in perfumes %}
+            <div class="col-lg-3 col-md-4 col-sm-10 pb-1">
+                <div class="card product-item border-0 mb-4">
+                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                        <img class="img-fluid w-100 h-200" src={{url_for('static', filename=perfume['fragrance_thumb'])}}>
+                    </div>
+                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                        <h6 class="text-truncate mb-3"><span style='font-weight: 700;'>{{perfume['brand_title']}}</span> {{perfume['fragrance_title']}} </h6>
+                        <div class="d-flex justify-content-center">
+                            {% if perfume['fragrance_discount'] == 0 %}
+                            <h6>{{perfume['fragrance_price']}}<span class='font-weight-bold'>₼</span></h6>
+                            {% else %}
+                            <h6>{{ discountCalc(perfume['fragrance_price'], perfume['fragrance_discount']) }}<span class='font-weight-bold'>₼</span></h6>
+                            <h6 class="text-muted ml-2"><del>{{perfume['fragrance_price']}}<span class='font-weight-bold'>₼</span></del></h6>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-center bg-light border">
+                        <a href="{{url_for('perfume', url=perfume['fragrance_url'])}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class='container-fluid p-5 text-center'>
+            <a href="{{url_for('category', url=fragrance['category_url'], count='1')}}" class="btn btn-outline-primary py-md-2 px-md-3">See All</a>
+        </div>
+        
+    </div>
+    <!-- Products End -->
+
+{% endblock content %}

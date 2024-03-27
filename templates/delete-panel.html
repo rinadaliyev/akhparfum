@@ -1,0 +1,52 @@
+{% extends "layout-admin.html" %} {% block title %}Edit{% endblock title %}
+{%block content %}
+<main class="content">
+  <div class="container-fluid p-0">
+
+    <div class="mb-3">
+      <h1 class="h3 d-inline align-middle">Delete Panel</h1>
+      <a class="badge bg-dark text-white ms-2" >
+        Delete Anything
+      </a>
+    </div>
+        <div class="col-12 col-md-9">
+          <form class="row" method="POST" action="{{url_for('delete')}}">
+            <div class="card"  >
+              <div class="card-header">
+                <label for=" ">Fragrance</label>
+                  <select name="fragrances" class="form-select mb-3 mt-3">
+                    {% for fragrance in fragrances %}
+                      {% if loop.first %}
+                      <option selected value="{{fragrance['fragrance_id']}}">
+                        {{fragrance['brand_title']}} {{fragrance['fragrance_title']}} - {{fragrance['category_title']}} - {{fragrance['fragrance_price']}} - 
+                        {% if fragrance['fragrance_instock']==1 %}
+                        Active
+                        {% else %}
+                        Deactive
+                        {% endif %}
+                      </option>
+                      {% endif %}  
+                      <option value="{{fragrance['fragrance_id']}}">
+                        {{fragrance['brand_title']}} {{fragrance['fragrance_title']}} - {{fragrance['category_title']}} - {{fragrance['fragrance_price']}} - 
+                        {% if fragrance['fragrance_instock']==1 %}
+                        Active
+                        {% else %}
+                        Deactive
+                        {% endif %}
+                      </option>
+                    {% endfor %}
+                  </select>
+                  <div style=" text-align:right;">
+                  <button type="submit" class="btn btn-danger" style='margin-bottom: 2rem;'>Delete</button>
+                  </div>
+              </div>        
+            </div>
+          </form>
+
+        </div>
+
+  
+  </div>
+</main>
+
+{% endblock content %}

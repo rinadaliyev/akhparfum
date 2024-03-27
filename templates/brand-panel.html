@@ -1,0 +1,80 @@
+{% extends "layout-admin.html" %} {% block title %}Edit{% endblock title %}
+{%block content %}
+<main class="content">
+  <div class="container-fluid p-0">
+
+    <div class="mb-3">
+      <h1 class="h3 d-inline align-middle">Brand Control Panel</h1>
+      <a class="badge bg-dark text-white ms-2" >
+        Brands
+      </a>
+    </div>
+        <div class="col-12 col-md-9">
+          <form class="row" method="POST" action="{{url_for('addbrand')}}" enctype="multipart/form-data">
+            <div class="card"  >
+              
+              <div class="card-header">
+                  <label for='title' style="min-width:100%;">
+                    <label for="" class="mb-1">Brand Title</label>
+                  <input type="text" name="title" class="form-control" placeholder="Brand Title" />
+                  </label><br><br>
+                  <label for='desc' style="min-width:100%;">
+                    <label for="" class="mb-1">Brand Description</label>
+                    <textarea
+                    name="desc" 
+                    class="form-control"
+                    rows="13"
+              placeholder="Description..."
+                  ></textarea>
+                  <select name="status" class="form-select mb-3 mt-3">
+                      <option selected value=1>Active</option>
+                      <option value=0>Passive</option>
+                  </select>
+                  <div style=" text-align:right;">
+                  <button type="submit" class="btn btn-info" style='margin-bottom: 2rem;'>Add</button>
+                  </div>
+              </div>        
+            </div>
+          </form>
+
+          {% for brand in brands %}
+        <form class="row" method="POST" action="{{url_for('updatebrand', id=brand['brand_id'])}}" >
+          <div class="card">
+            
+            <div class="card-header">
+                <label for='title' style="min-width:100%;">
+                  <label for="" class="mb-1">Brand Title</label>
+                <input type="text" name="title" class="form-control" value="{{brand['brand_title']}}" />
+                </label><br><br>
+                <label for='desc' style="min-width:100%;">
+                  <label for="" class="mb-1">Brand Description</label>
+                  <textarea
+                  name="desc" 
+                  class="form-control"
+                  rows="13"
+            placeholder="Description..."
+                >{{brand['brand_desc']}}</textarea>
+                <select name="status" class="form-select mb-3 mt-3">
+                {% if brand['brand_status'] == 1 %}
+                  <option selected value=1>Active</option>
+                  <option value=0>Passive</option>
+                  {% else %}
+                  <option selected value=0>Passive</option>
+                  <option value=1>Active</option>
+                  {% endif %}
+                </select>
+                <div style=" text-align:right;">
+                <button type="submit" class="btn btn-info" style='margin-bottom: 2rem;'>Edit</button>
+                </div>
+            </div>        
+          </div>
+        </form>
+
+        {% endfor %}
+        </div>
+
+  
+  </div>
+</main>
+
+{% endblock content %}

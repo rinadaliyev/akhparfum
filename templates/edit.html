@@ -1,0 +1,132 @@
+{% extends "layout-admin.html" %} {% block title %}Edit{% endblock title %} {%
+block content %}
+<main class="content">
+  <div class="container-fluid p-0">
+    <div class="mb-3">
+      <h1 class="h3 d-inline align-middle"><strong>{{ fragrance['brand_title'] }}</strong> {{fragrance['fragrance_title']}}</h1>
+      <a class="badge bg-warning text-white ms-2">
+        Edit
+      </a>
+    </div>
+    <div class="row">
+      <form  method="POST" action="{{url_for('edit')}}" enctype="multipart/form-data">
+      <div class="col-12 col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Fragrance's Detail</h5>
+            <input type="text" name="name" class="form-control mb-3" value="{{fragrance['fragrance_title'] }}" />
+            <select name="brand" class="form-select mb-3">
+              {% for brand in brands %}
+              {% if loop.first %}
+              <option selected value="{{brand['brand_id']}}">{{brand['brand_title']}}</option>
+              {% else %}
+              <option value="{{brand['brand_id']}}">{{brand['brand_title']}}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+            <select name="category" class="form-select mb-3">
+              {% for category in categories() %}
+              <option selected value="{{category['category_id']}}">{{category['category_title']}}</option>
+              {% else %}
+              <option value="{{category['category_id']}}">{{category['category_title']}}</option>
+              {% endfor %}
+            </select>
+            <input type="text" name="url" class="form-control mb-3" value="{{fragrance['fragrance_url'] }}" />
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Fragrance's Description</h5>
+            <textarea
+              name="desc" 
+              class="form-control"
+              rows="13"
+			  placeholder="Description..."
+            >{{fragrance['fragrance_desc']}}</textarea>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title mb-0">Prices</h5>
+            <label for="price">
+              <label for="price">Price for S size (30ml)</label>
+            <input type="number" name="price" id="price" class="form-control mb-3" value="{{fragrance['fragrance_price'] }}" />
+            </label>
+            <label for="price2">
+              <label for="price2">Price for M size (50ml)</label>
+              <input type="number" name="price2" id="price2" class="form-control mb-3" value="{{fragrance['fragrance_price2'] }}" />
+            </label>
+            <label for="price3">
+              <label for="price3">Price for L size (100ml)</label>
+              <input type="number" name="price3" id="price3" class="form-control mb-3" value="{{fragrance['fragrance_price3'] }}" />
+            </label><br>
+            <div>
+              <label for="discount" style="margin: auto 0;">
+                <label  for="discount">Discount percent (%)</label>
+                <input type="number" name="discount" id="discount" class="form-control mb-3"  onchange="discountCall()"  value="{{fragrance['fragrance_discount'] }}" />
+              </label>
+              <label for="s" style="margin: auto 0;">
+                <span>Discount price (%)</span>
+                <span class="form-control mb-3">
+                  <span id="discountPrice1">0</span>₼
+                  <span id="discountPrice2">0</span>₼
+                  <span id="discountPrice3">0</span>₼
+                </span>
+                <script>
+                  const discountCall = () => {
+                      const discount = document.querySelector('#discount').value
+                      const price = document.querySelector('#price').value
+                      const price2 = document.querySelector('#price2').value
+                      const price3 = document.querySelector('#price3').value
+
+                      const discountCalc = (x,y) => {
+                        let last = x-(x/100*y)
+                        return last
+                      }
+
+                      document.querySelector('#discountPrice1').innerHTML = discountCalc(price, discount)
+                      document.querySelector('#discountPrice2').innerHTML = discountCalc(price2, discount)
+                      document.querySelector('#discountPrice3').innerHTML = discountCalc(price3, discount)
+
+                    }
+                </script>
+                
+              </label>
+                <br>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Fragrance's Images</h5>
+              <label for="file" class="form-label">Select Image</label>
+              <input name="file" type="file" class="form-control" accept=".jpg, .jpeg, .png" required ><br>
+
+              <select name="status" class="form-select mb-3">
+                {% if fragrance['fragrance_instock'] == 1 %}
+                <option selected value=1>Active</option>
+                <option value=0>Passive</option>
+                {% else %}
+                <option selected value=0>Passive</option>
+                <option value=1>Active</option>
+                {% endif %}
+              </select>
+              <div class='card-body' style="text-align:right; margin-bottom: 1rem;">
+                <button class="btn btn-warning">Edit</button>
+              </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </form>
+    </div>
+  </div>
+</main>
+{% endblock content %}

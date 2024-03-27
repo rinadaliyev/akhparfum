@@ -1,0 +1,131 @@
+{% extends 'layout.html' %}
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+                <div id="header-carousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for carouselItem in carouselItems() %}
+                        {% if loop.first %}
+                        <div class="carousel-item active" style="height: 410px;">
+                        {% else %}
+                        <div class="carousel-item" style="height: 410px;">
+                        {% endif %}
+                            <img class="img-fluid" src="{{url_for('static', filename=carouselItem['carousel_image'])}}" alt="Image">
+                            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                                <div class="p-3" style="max-width: 700px;">
+                                    <h4 class="text-light text-uppercase font-weight-medium mb-3">{{carouselItem['carousel_second']}}</h4>
+                                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">{{carouselItem['carousel_title']}}</h3>
+                                    <a href="{{url_for('shop', url='1')}}" class="btn btn-light py-2 px-3">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                    <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
+                        <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                            <span class="carousel-control-prev-icon mb-n2"></span>
+                        </div>
+                    </a>
+                    <a class="carousel-control-next" href="#header-carousel" data-slide="next">
+                        <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                            <span class="carousel-control-next-icon mb-n2"></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Navbar End -->
+
+
+    <!-- Featured Start -->
+    <div class="container-fluid pt-5">
+        <div class="row px-xl-5 pb-3">
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                    <h1 class="fa fa-check text-primary m-0 mr-3"></h1>
+                    <h5 class="font-weight-semi-bold m-0">Original Product</h5>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                    <h1 class="fa fa-shipping-fast text-primary m-0 mr-2"></h1>
+                    <h5 class="font-weight-semi-bold m-0">Free Delivery</h5>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                    <h1 class="fas fa-eye-dropper text-primary m-0 mr-3"></h1>
+                    <h5 class="font-weight-semi-bold m-0">100+ Samples</h5>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                    <h1 class="fas fa-money-bill text-primary m-0 mr-3"></h1>
+                    <h5 class="font-weight-semi-bold m-0">Pay at The Door</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Featured End -->
+
+    <!-- Offer Start -->
+    <div class="container-fluid offer pt-5">
+        <div class="row px-xl-5">
+            {% for category in categories() %}
+            <div class="col-md-4 pb-4">
+                <div class="position-relative border text-center text-md-center text-white mb-2 py-5 px-5">
+                    <div class="position-relative" style="z-index: 1;">
+                        <h5 class="text-uppercase text-primary mb-3">Exclusive Fragrancy for</h5>
+                        <h1 class="mb-4 font-weight-semi-bold">{{ category['category_title'] }}</h1>
+                        <a href="{{url_for('category', url=category['category_url'], count='1')}}" class="btn btn-outline-primary py-md-2 px-md-3">See Now</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Offer End -->
+
+
+    <!-- Products Start -->
+    <div class="container-fluid pt-5">
+        <div class="text-center mb-4">
+            <h2 class="section-title px-5"><span class="px-2">Most Recently Fragrances</span></h2>
+        </div>
+        <div class="row px-xl-5 pb-3">
+            {% for fragrance in fragrances %}
+            <div class="col-lg-3 col-md-4 col-sm-10 pb-1">
+            <a href="{{url_for('perfume', url=(fragrance['fragrance_url']))}}" class="btn btn-sm text-dark p-0">
+
+                <div class="card product-item border-0 mb-4">
+                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                        <img class="img-fluid w-100 h-200" src="{{url_for('static', filename=fragrance['fragrance_thumb'])}}">
+                    </div>
+                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                        <h6 class="text-truncate mb-3"><span style='font-weight: 700;'>{{fragrance['brand_title']}}</span> {{fragrance['fragrance_title']}} </h6>
+                        <div class="d-flex justify-content-center">
+                            {% if fragrance['fragrance_discount'] == 0 %}
+                            <h6>{{fragrance['fragrance_price']}}<span class='font-weight-bold'>₼</span></h6>
+                            {% else %}
+                            <h6>{{ discountCalc(fragrance['fragrance_price'], fragrance['fragrance_discount']) }}<span class='font-weight-bold'>₼</span></h6>
+                            <h6 class="text-muted ml-2"><del>{{fragrance['fragrance_price']}}<span class='font-weight-bold'>₼</span></del></h6>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-center bg-light border">
+                        <a href="{{url_for('perfume', url=(fragrance['fragrance_url']))}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                    </div>
+                </div>
+            </a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class='container-fluid p-5 text-center'>
+            <a href="{{url_for('shop', url='1')}}" class="btn btn-outline-primary py-md-2 px-md-3">See All</a>
+        </div>
+        
+    </div>
+    <!-- Products End -->
+{% endblock content %}
